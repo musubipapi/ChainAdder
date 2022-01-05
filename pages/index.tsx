@@ -44,7 +44,7 @@ const Home: NextPage = () => {
   const [filteredData, setFilteredData] = useState<ChainInfo[]>(chainData);
   const searchData = useMemo(
     () => chainData && new Fuse(chainData, options),
-    [chainData]
+    [chainData, options]
   );
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const Home: NextPage = () => {
     } else {
       setFilteredData(chainData);
     }
-  }, [searchText, chainData]);
+  }, [searchText, chainData, searchData]);
   useEffect(() => {
     const timer = setTimeout(() => setSearchText(debouncedTerm), 200);
     return () => clearTimeout(timer);
@@ -133,15 +133,14 @@ const Home: NextPage = () => {
                         onClick={() => connect(x)}
                       >
                         {x.name === "MetaMask" && (
-                          <Image width="25px" mr="10px" src="./metamask.svg" />
-                        )}
-                        {x.name === "WalletConnect" && (
                           <Image
                             width="25px"
+                            alt="metamask-image"
                             mr="10px"
-                            src="./walletconnect.svg"
+                            src="./metamask.svg"
                           />
                         )}
+
                         {x.name}
                         {!x.ready && " (unsupported)"}
                         {loading && x.name === connector?.name && "…"}
@@ -153,10 +152,9 @@ const Home: NextPage = () => {
             </Box>
             <Box mx="30px" mb="30px">
               <InputGroup>
-                <InputLeftElement
-                  pointerEvents="none"
-                  children={<SearchIcon color="gray.300" />}
-                />
+                <InputLeftElement pointerEvents="none">
+                  <SearchIcon color="gray.300" />
+                </InputLeftElement>
                 <Input
                   color="white"
                   fontWeight="400"
