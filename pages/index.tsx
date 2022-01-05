@@ -104,15 +104,17 @@ const Home: NextPage = () => {
                 <Heading fontSize="6xl">Chain Adder</Heading>
                 v1
               </Box>
-              <Button
-                position={["relative", null, "absolute"]}
-                right={["auto", null, 0]}
-                colorScheme="purple"
-                onClick={() => disconnect()}
-                _hover={{ cursor: "auto" }}
-              >
-                Logout
-              </Button>
+              {connected && (
+                <Button
+                  position={["relative", null, "absolute"]}
+                  right={["auto", null, 0]}
+                  colorScheme="purple"
+                  onClick={() => disconnect()}
+                  _hover={{ cursor: "auto" }}
+                >
+                  Logout
+                </Button>
+              )}
               {!connected && (
                 <Menu placement="bottom-end">
                   <MenuButton
