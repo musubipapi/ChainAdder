@@ -25,10 +25,7 @@ import { filter } from "lodash";
 
 const Home: NextPage = () => {
   const { data: chainData, isLoading } = useGetChainData();
-  const options = {
-    threshold: 0.2,
-    keys: ["name", "networkId"],
-  };
+
   const [
     {
       data: { connected, connector, connectors },
@@ -43,8 +40,13 @@ const Home: NextPage = () => {
   const [debouncedTerm, setDebouncedTerm] = useState(searchText);
   const [filteredData, setFilteredData] = useState<ChainInfo[]>(chainData);
   const searchData = useMemo(
-    () => chainData && new Fuse(chainData, options),
-    [chainData, options]
+    () =>
+      chainData &&
+      new Fuse(chainData, {
+        threshold: 0.2,
+        keys: ["name", "networkId"],
+      }),
+    [chainData]
   );
 
   useEffect(() => {
@@ -53,7 +55,7 @@ const Home: NextPage = () => {
     } else {
       setFilteredData(chainData);
     }
-  }, [searchText, chainData, searchData]);
+  }, [searchText, chainData]);
   useEffect(() => {
     const timer = setTimeout(() => setSearchText(debouncedTerm), 200);
     return () => clearTimeout(timer);
